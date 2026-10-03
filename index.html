@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d0102a">
+<title>Kuis IPAS Kelas 6 – Jejak Sang Pahlawan</title>
+<style>
+:root{--merah:#d0102a;--tua:#8e0b1d;--ink:#12203a;--emas:#f2b705;--hijau:#178a5c;--garis:#dde2ee;--bg:#f4f6fb;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:520px;margin:0 auto;padding:14px 14px 28px}
+.kop{border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 6px 22px #12203a1a;margin-bottom:14px}
+.kop i{display:block;height:34px;background:linear-gradient(#d0102a 50%,#fff 50%);border-bottom:1px solid var(--garis)}
+.kop div{padding:16px 18px 18px}
+h1{margin:0 0 4px;font:900 28px/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.5px}
+.sub{margin:0;color:#4a5875;font-size:15px}
+.kartu{background:#fff;border-radius:18px;padding:18px;box-shadow:0 2px 12px #12203a14}
+label{display:block;font-weight:700;margin:14px 0 6px}
+input{width:100%;padding:14px;font:inherit;border:2px solid var(--garis);border-radius:12px;background:#fff;color:inherit}
+input:focus,button:focus-visible,summary:focus-visible{outline:3px solid var(--emas);outline-offset:2px;border-color:var(--ink)}
+.btn{display:block;width:100%;min-height:52px;padding:14px;border:0;border-radius:14px;background:var(--merah);color:#fff;font:800 17px system-ui,sans-serif;cursor:pointer}
+.btn:active{background:var(--tua)}
+.btn:disabled{opacity:.4}
+.btn.wa{background:var(--hijau)}
+.btn.abu{background:#fff;color:var(--ink);border:2px solid var(--garis)}
+.btn+.btn{margin-top:10px}
+.aturan{margin:14px 0 0;padding-left:20px;color:#4a5875;font-size:14px}
+.err{color:var(--merah);font-weight:700;min-height:22px;margin:8px 0 0}
+.bar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+.bar small{display:block;opacity:.75;font-size:12px}
+#waktu{font:800 26px/1 system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.bar.low{background:var(--merah);animation:kedip 1s infinite}
+@keyframes kedip{50%{background:var(--tua)}}
+@media (prefers-reduced-motion:reduce){.bar.low{animation:none}}
+.info{display:flex;justify-content:space-between;font-weight:700;margin:4px 2px 10px}
+.info span:last-child{color:#4a5875;font-weight:600}
+#tanya{margin:0 0 6px;font-size:18px;font-weight:700;line-height:1.45}
+.op{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;margin:10px 0 0;padding:13px;border:2px solid var(--garis);border-radius:14px;background:#fff;color:inherit;font:inherit;cursor:pointer}
+.op b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--garis);display:grid;place-items:center;font-size:14px}
+.op.on{border-color:var(--merah);background:#fff0f2}
+.op.on b{background:var(--merah);color:#fff}
+.nav{display:flex;gap:10px;margin-top:14px}
+.nav .btn{margin:0}
+details{margin-top:14px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 12px #12203a14}
+summary{font-weight:700;cursor:pointer}
+#grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+#grid button{min-height:44px;border:2px solid var(--garis);border-radius:10px;background:#fff;font:700 15px system-ui,sans-serif;color:var(--ink)}
+#grid .ok{background:var(--ink);border-color:var(--ink);color:#fff}
+#grid .now{border-color:var(--merah);box-shadow:0 0 0 2px var(--merah)}
+.selesai{text-align:center}
+#skor{font:900 84px/1 Georgia,serif;color:var(--merah);margin:4px 0}
+#rinci{font-weight:700}
+#pesan{margin:10px 0 4px}
+#nm{color:#4a5875;font-size:14px;margin:0 0 14px}
+.st{padding:10px;border-radius:12px;background:var(--bg);font-size:14px;font-weight:700;margin-bottom:12px}
+.st.ok{color:var(--hijau)}
+.st.gagal{color:var(--merah)}
+</style>
+</head>
+<body>
+<!-- 1. LOGIN -->
+<main id="s1">
+  <div class="kop"><i></i><div>
+    <h1>Jejak Sang Pahlawan</h1>
+    <p class="sub">Kuis IPAS Kelas 6 · Bab 3</p>
+  </div></div>
+  <div class="kartu">
+    <label for="nama">Nama lengkap</label>
+    <input id="nama" autocomplete="off" maxlength="100" placeholder="Contoh: Aisyah Putri">
+    <label for="sekolah">Asal sekolah</label>
+    <input id="sekolah" autocomplete="off" maxlength="150" placeholder="Contoh: SDN 1 Majalengka">
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" onclick="mulai()">Mulai kuis</button>
+    <ul class="aturan">
+      <li>20 soal pilihan ganda, urutan soal diacak.</li>
+      <li>Waktu 30 menit. Alarm berbunyi saat waktu habis dan jawaban otomatis dikumpulkan.</li>
+      <li>Jangan menutup halaman. Jika tidak sengaja tertutup, buka lagi dan waktu tetap berjalan.</li>
+    </ul>
+  </div>
+</main>
+
+<!-- 2. KUIS -->
+<div id="s2" hidden>
+  <div class="bar" id="bar"><div>Sisa waktu<small id="jawab"></small></div><div id="waktu">30:00</div></div>
+  <main>
+    <div class="info"><span id="no"></span><span id="pembuat"></span></div>
+    <div class="kartu">
+      <p id="tanya"></p>
+      <div id="opsi"></div>
+    </div>
+    <div class="nav">
+      <button class="btn abu" id="prev" onclick="S.cur--;save();tampil();scrollTo(0,0)">‹ Kembali</button>
+      <button class="btn" id="next" onclick="maju()">Lanjut ›</button>
+    </div>
+    <details><summary>Lompat ke nomor soal</summary><div id="grid"></div></details>
+    <button class="btn abu" style="margin-top:14px" onclick="selesai(false)">Kumpulkan jawaban</button>
+  </main>
+</div>
+
+<!-- 3. HASIL -->
+<main id="s3" hidden>
+  <div class="kartu selesai">
+    <div id="pesan"></div>
+    <div>Nilai kamu</div>
+    <div id="skor">0</div>
+    <div id="rinci"></div>
+    <p id="nm"></p>
+    <div class="st" id="status"></div>
+    <button class="btn wa" onclick="wa()">Kirim hasil ke WhatsApp guru</button>
+    <button class="btn abu" id="ulang" onclick="kirim()" hidden>Coba simpan ulang ke database</button>
+    <button class="btn abu" onclick="keluar()">Selesai / login ulang</button>
+  </div>
+</main>
+
+<script>
+/* ====== PENGATURAN – ubah di sini ====== */
+const CFG={
+  WA:'6281234567890',        // nomor WA guru, format 62xxxxxxxxxx (tanpa + dan tanpa 0 di depan)
+  API:'simpan.php',          // file penyimpan ke database
+  MENIT:30,
+  BAB:'Bab 3 - Jejak Sang Pahlawan'
+};
+
+/* ====== BANK SOAL ======
+   Format: [pertanyaan, [jawaban benar, salah, salah, salah]]
+   Jawaban benar selalu ditulis pertama; urutan pilihan diacak otomatis. */
+const Q=[
+["Belanda mengeluarkan Politik Etis terutama karena ...",["banyak kritik terhadap tanam paksa yang merugikan rakyat sehingga Belanda dianggap harus membalas budi","rakyat Hindia Belanda berhasil mengusir pemerintah Belanda dari seluruh Pulau Jawa","hasil tanam paksa berupa kopi dan teh tidak laku dijual di benua Eropa","Belanda sudah berencana memberikan kemerdekaan kepada rakyat Hindia Belanda"]],
+["Pasangan kebijakan Trias Van Deventer dan tujuannya yang tepat adalah ...",["Emigrasi – memindahkan sebagian penduduk Jawa dan Madura ke Sumatra dan pulau lain","Irigasi – membangun sekolah rakyat agar penduduk pribumi dapat membaca","Edukasi – membangun bendungan untuk mengairi sawah milik rakyat","Emigrasi – mendatangkan pekerja dari Eropa untuk bekerja di Pulau Jawa"]],
+["Kebijakan Politik Etis yang kemudian menjadi awal mula pergerakan nasional melawan penjajahan adalah ...",["edukasi, karena rakyat pribumi memperoleh kesempatan bersekolah dan belajar membaca","irigasi, karena sawah-sawah rakyat menjadi lebih subur dan hasil panen meningkat","emigrasi, karena penduduk berpindah dan membuka lahan baru di pulau lain","tanam paksa, karena seluruh rakyat bekerja sama menanam tanaman ekspor"]],
+["Pada masa tanam paksa, rakyat yang tidak memiliki lahan diwajibkan ...",["bekerja di perkebunan milik Belanda","menyerahkan 20% tanah miliknya kepada Belanda","pergi berpindah ke Sumatra untuk membuka lahan","membayar pajak dengan seluruh hasil kebunnya"]],
+["Eduard Douwes Dekker (Multatuli) mengkritik tanam paksa melalui buku Max Havelaar yang menceritakan ...",["penderitaan rakyat Banten akibat tanam paksa","kehebatan pasukan Belanda dalam perang di Aceh","keberhasilan sekolah rakyat yang dibangun Belanda","perjalanan pelayaran armada Cornelis de Houtman"]],
+["Pieter Brooshooft memperkuat kritiknya terhadap tanam paksa dengan cara ...",["berkeliling Pulau Jawa tahun 1887, mencatat kondisi rakyat, lalu melaporkannya kepada 12 politisi Belanda","menulis buku tentang penderitaan rakyat Banten yang pernah ia saksikan sebagai pegawai","memimpin perlawanan bersenjata bersama petani di Pulau Jawa","membangun bendungan dan saluran irigasi untuk membantu petani"]],
+["Portugis, Spanyol, Belanda, dan Jepang berlomba-lomba menguasai Indonesia terutama karena ...",["letak geografis yang strategis dan kekayaan alamnya yang melimpah","rakyat Indonesia belum pernah melakukan perlawanan kepada bangsa asing","wilayah Indonesia kecil sehingga mudah dikuasai dan dijaga","Indonesia sudah memiliki banyak pabrik dan sekolah modern"]],
+["Ir. H. Juanda mencetuskan Deklarasi Djuanda tahun 1957. Apa yang terjadi pada laut di antara pulau-pulau Indonesia SEBELUM deklarasi itu?",["dianggap laut internasional sehingga kapal negara mana pun bebas berlayar dan mengancam kedaulatan","dilarang dilewati semua kapal sehingga pelayaran antarpulau terhenti","sudah menjadi wilayah kedaulatan Indonesia dan diakui oleh dunia","dikuasai bersama oleh Indonesia dan negara tetangga"]],
+["Bu Sari selalu memberi dukungan dan motivasi kepada muridnya yang sedang mencoba hal baru. Sikap Bu Sari sesuai dengan semboyan pendidikan yang dicetuskan ...",["Ki Hadjar Dewantara, yaitu Tut Wuri Handayani","Johannes Leimena, yaitu Tut Wuri Handayani","Ki Hadjar Dewantara, yaitu Bhinneka Tunggal Ika","Sam Ratulangi, yaitu pantang menyerah"]],
+["Warga mudah berobat di puskesmas yang ada di tingkat kelurahan dan kecamatan. Fasilitas ini merupakan jejak pahlawan bernama ...",["Johannes Leimena, penggagas fasilitas kesehatan yang dekat dengan masyarakat","Ki Hadjar Dewantara, pendiri sekolah Taman Siswa","W. Z. Johannes, ahli radiologi pertama di Indonesia","Sam Ratulangi, doktor ilmu pasti pertama di Indonesia"]],
+["Berikut ini yang BUKAN dasar pemberian gelar pahlawan nasional adalah ...",["memiliki jabatan tinggi dan harta yang banyak","berjuang melawan penjajahan di wilayah NKRI","gugur atau meninggal dunia demi membela bangsa dan negara","menghasilkan prestasi dan karya luar biasa bagi kemajuan bangsa"]],
+["Tokoh asal Banjar, Kalimantan Selatan, yang mempersatukan suku-suku Dayak dan mengangkat senjata melawan Belanda adalah ...",["Pangeran Antasari","I Gusti Ngurah Rai","Pattimura","Silas Papare"]],
+["Pahlawan asal Bali yang memimpin Tentara Keamanan Rakyat Sunda Kecil dan menggagas strategi puputan Margarana adalah ...",["I Gusti Ngurah Rai","Pangeran Antasari","Muhammad Zainuddin Abdul Madjid","Johannes Leimena"]],
+["Tokoh perempuan asal Sumatera Barat yang mendorong kesetaraan pendidikan bagi perempuan dan mendirikan Sekolah Putri di Padang Panjang adalah ...",["H. R. Rasuna Said","Laksamana Malahayati","Ki Hadjar Dewantara","Abdoel Moeis"]],
+["Pahlawan Nasional Indonesia pertama yang berjuang melalui karya tulisan sebagai sastrawan, politikus, dan wartawan adalah ...",["Abdoel Moeis","Mohammad Hatta","Sam Ratulangi","Silas Papare"]],
+["Silas Papare mendirikan Badan Perjuangan Irian di Yogyakarta. Tujuan perjuangannya adalah ...",["menyatukan Irian (Papua) dengan Indonesia","memperluas batas laut antarpulau Indonesia","mendirikan sekolah putri bagi perempuan","mendirikan organisasi Nahdlatul Wathan di Nusa Tenggara Barat"]],
+["Langkah Bung Hatta bersama Indische Vereeniging di Belanda yang membuatnya ditahan pemerintah Belanda tahun 1927 adalah ...",["mengubahnya menjadi gerakan politik dan menerbitkan majalah Indonesia Merdeka yang mengkritik Belanda","memimpin perang gerilya dari hutan dan pegunungan di Sumatra","mendirikan sekolah Taman Siswa untuk memberi pendidikan kepada rakyat","mencetuskan deklarasi tentang batas wilayah laut Indonesia"]],
+["Kepedulian Bung Hatta pada kedaulatan dan kesejahteraan rakyat tercermin dalam pasal konstitusi tentang ...",["penguasaan negara atas sumber daya alam serta hak berkumpul dan berserikat","kewajiban rakyat menyerahkan sebagian hasil panen kepada negara","pelarangan rakyat mendirikan perkumpulan dan organisasi","penggunaan bahasa Belanda sebagai bahasa resmi negara"]],
+["Di kelas Dina ada murid baru dari suku yang berbeda dan dijauhi teman-temannya. Sikap Dina yang meneladani para pahlawan adalah ...",["mengajaknya bermain dan belajar bersama karena semua adalah saudara sebangsa","menunggu sampai ia menjadi mirip dengan teman-teman yang lain","hanya berteman dengan murid yang sesuku dengannya","ikut menjauhinya agar tidak dimusuhi teman-temannya"]],
+["Peribahasa “harimau mati meninggalkan belang, manusia mati meninggalkan nama” jika dikaitkan dengan pahlawan berarti ...",["pahlawan dikenang sesuai perbuatannya, misalnya lewat nama jalan, gedung, dan jasa yang masih bermanfaat","pahlawan hanya dikenang apabila semasa hidupnya memiliki banyak harta benda","pahlawan dikenang karena kekuatan fisik dan kemampuannya berperang","nama pahlawan akan dilupakan setelah perjuangan merebut kemerdekaan selesai"]]
+];
+
+/* ====== LOGIKA ====== */
+const $=id=>document.getElementById(id);
+let S=null,tick=null,ctx=null;
+const AC=window.AudioContext||window.webkitAudioContext;
+document.addEventListener('pointerdown',()=>{try{ctx=ctx||new AC();ctx.resume()}catch(e){}});
+
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+const save=()=>{try{localStorage.setItem('kuis_ipas_b3',JSON.stringify(S))}catch(e){}};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function layar(n){$('s1').hidden=n!==1;$('s2').hidden=n!==2;$('s3').hidden=n!==3;scrollTo(0,0)}
+
+function mulai(){
+  const nama=$('nama').value.trim(),sekolah=$('sekolah').value.trim();
+  if(nama.length<3||sekolah.length<3){$('err').textContent='Isi nama lengkap dan asal sekolah dengan benar.';return}
+  $('err').textContent='';
+  const order=shuffle([...Q.keys()]);               // urutan soal acak tiap login
+  S={nama,sekolah,start:Date.now(),end:Date.now()+CFG.MENIT*60000,order,
+     opt:order.map(()=>shuffle([0,1,2,3])),          // urutan pilihan acak
+     ans:order.map(()=>null),cur:0,done:false,saved:false};
+  save();buka();
+}
+function buka(){layar(2);$('pembuat').textContent=S.nama;tampil();jalan()}
+
+function tampil(){
+  const k=S.cur,q=Q[S.order[k]];
+  $('no').textContent='Soal '+(k+1)+' dari '+Q.length;
+  $('jawab').textContent='Terjawab '+S.ans.filter(a=>a!==null).length+'/'+Q.length;
+  $('tanya').textContent=q[0];
+  const o=$('opsi');o.innerHTML='';
+  S.opt[k].forEach((oi,p)=>{
+    const b=document.createElement('button'),l=document.createElement('b'),t=document.createElement('span');
+    b.className='op'+(S.ans[k]===oi?' on':'');l.textContent='ABCD'[p];t.textContent=q[1][oi];
+    b.append(l,t);b.onclick=()=>{S.ans[k]=oi;save();tampil()};o.append(b);
+  });
+  const g=$('grid');g.innerHTML='';
+  S.ans.forEach((a,i)=>{
+    const b=document.createElement('button');b.textContent=i+1;
+    b.className=(a!==null?'ok ':'')+(i===k?'now':'');
+    b.onclick=()=>{S.cur=i;save();tampil();scrollTo(0,0)};g.append(b);
+  });
+  $('prev').disabled=k===0;
+  $('next').textContent=k===Q.length-1?'Selesai ✓':'Lanjut ›';
+}
+function maju(){if(S.cur===Q.length-1)selesai(false);else{S.cur++;save();tampil();scrollTo(0,0)}}
+
+function jalan(){
+  clearInterval(tick);
+  const t=()=>{
+    const s=Math.max(0,Math.ceil((S.end-Date.now())/1000));
+    $('waktu').textContent=fmt(s);$('bar').classList.toggle('low',s<=300);
+    if(s<=0){clearInterval(tick);bunyi();selesai(true)}
+  };
+  t();tick=setInterval(t,500);
+}
+function bunyi(){          // alarm waktu habis
+  try{
+    ctx=ctx||new AC();ctx.resume();
+    for(let i=0;i<8;i++){
+      const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.45;
+      o.type='square';o.frequency.value=i%2?660:880;o.connect(g);g.connect(ctx.destination);
+      g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.start(t);o.stop(t+.42);
+    }
+  }catch(e){}
+  if(navigator.vibrate)navigator.vibrate([400,150,400,150,400]);
+}
+
+function selesai(auto){
+  if(S.done)return;
+  if(!auto){
+    const n=S.ans.filter(a=>a===null).length;
+    if(!confirm(n?'Masih ada '+n+' soal belum dijawab. Yakin ingin selesai?':'Kumpulkan jawaban sekarang?'))return;
+  }
+  clearInterval(tick);S.done=true;
+  const benar=S.ans.filter(a=>a===0).length,kosong=S.ans.filter(a=>a===null).length;
+  S.h={benar,kosong,salah:Q.length-benar-kosong,skor:Math.round(benar*100/Q.length),
+       durasi:Math.min(CFG.MENIT*60,Math.round((Date.now()-S.start)/1000)),habis:!!auto};
+  save();lihat();kirim();
+}
+function lihat(){
+  const h=S.h;layar(3);
+  $('skor').textContent=h.skor;
+  $('rinci').textContent='Benar '+h.benar+' · Salah '+h.salah+' · Kosong '+h.kosong+' · Waktu '+fmt(h.durasi);
+  $('nm').textContent=S.nama+' – '+S.sekolah;
+  $('pesan').textContent=(h.habis?'⏰ Waktu habis! ':'')+(h.skor>=80?'Luar biasa, kamu hebat seperti para pahlawan!':h.skor>=60?'Bagus! Sedikit lagi, terus semangat belajar.':'Jangan menyerah seperti para pahlawan. Ayo belajar lagi!');
+}
+async function kirim(){
+  const st=$('status');$('ulang').hidden=true;st.className='st';st.textContent='Menyimpan hasil ke database…';
+  try{
+    const r=await fetch(CFG.API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nama:S.nama,sekolah:S.sekolah,benar:S.h.benar,salah:S.h.salah,kosong:S.h.kosong,durasi:S.h.durasi})});
+    const j=await r.json();if(!j.ok)throw new Error();
+    S.saved=true;save();st.className='st ok';st.textContent='✓ Hasil sudah tersimpan di database.';
+  }catch(e){st.className='st gagal';st.textContent='Hasil belum tersimpan. Periksa internet, lalu tekan tombol di bawah.';$('ulang').hidden=false}
+}
+function wa(){
+  const h=S.h;
+  const t='*HASIL KUIS IPAS KELAS 6*\n'+CFG.BAB+'\n\nNama: '+S.nama+'\nSekolah: '+S.sekolah+
+    '\nBenar: '+h.benar+' dari '+Q.length+'\nSalah: '+h.salah+'\nKosong: '+h.kosong+'\nNilai: *'+h.skor+'*\nWaktu: '+fmt(h.durasi);
+  window.open('https://wa.me/'+CFG.WA+'?text='+encodeURIComponent(t),'_blank');
+}
+function keluar(){
+  try{localStorage.removeItem('kuis_ipas_b3')}catch(e){}
+  S=null;$('nama').value='';$('sekolah').value='';layar(1);
+}
+
+/* lanjutkan sesi jika halaman dimuat ulang */
+try{S=JSON.parse(localStorage.getItem('kuis_ipas_b3'))}catch(e){S=null}
+if(S&&S.order&&S.order.length===Q.length){
+  if(S.done){lihat();if(!S.saved)kirim()}
+  else if(Date.now()>=S.end){bunyi();selesai(true)}
+  else buka();
+}else S=null;
+</script>
+</body>
+</html>
